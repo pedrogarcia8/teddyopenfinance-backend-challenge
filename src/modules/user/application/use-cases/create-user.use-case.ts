@@ -17,8 +17,8 @@ export class CreateUserUseCase {
 
     const encryptedPassword = await bcrypt.hash(password, 10);
     const user = new User(email, encryptedPassword);
-    await this.userRepository.create(user);
-    const token = JwtTokenGenerator(email);
+    const { id } = await this.userRepository.create(user);
+    const token = JwtTokenGenerator(email, id as string);
     return token;
   }
 }

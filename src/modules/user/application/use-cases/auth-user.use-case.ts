@@ -17,7 +17,7 @@ export class AuthUserUseCase {
     const isAuthorized = await bcrypt.compare(password, user.password);
     if (!isAuthorized) throw new InvalidCredentialsError();
 
-    const token = JwtTokenGenerator(email);
+    const token = JwtTokenGenerator(email, user.id as string);
 
     return token;
   }

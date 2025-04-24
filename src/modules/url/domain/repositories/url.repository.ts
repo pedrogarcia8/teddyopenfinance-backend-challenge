@@ -5,4 +5,5 @@ export interface UrlRepository {
   findByCode(code: string): Promise<Url | null>;
   findByOriginalUrl(originalUrl: string): Promise<Url | null>;
   updateClicks(code: string): Promise<void>;
+  listUrlsByUserId(userId: string): Promise<Url[]>;
 }

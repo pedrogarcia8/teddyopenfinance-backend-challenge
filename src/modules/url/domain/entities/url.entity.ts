@@ -7,5 +7,6 @@ export class Url {
     public createdAt?: Date,
     public updatedAt?: Date,
     public deletedAt: Date | null = null,
+    public userId: string | null = null,
   ) {}
 }

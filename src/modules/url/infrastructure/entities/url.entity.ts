@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-
+import { UserOrmEntity } from '../../../user/infrastructure/entities/user.entity';
 @Entity('url')
 export class UrlOrmEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -31,4 +33,14 @@ export class UrlOrmEntity {
 
   @DeleteDateColumn({ nullable: true })
   deletedAt: Date | null;
+
+  @ManyToOne(() => UserOrmEntity, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'userId' })
+  user: UserOrmEntity;
+
+  @Column({ nullable: true })
+  userId: string | null;
 }

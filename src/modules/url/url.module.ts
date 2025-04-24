@@ -6,6 +6,7 @@ import { ShortenUrlUseCase } from './application/use-cases/shorten-url.use-case'
 import { UrlRepositoryImpl } from './infrastructure/repositories/url.repository.impl';
 import { ResolveUrlUseCase } from './application/use-cases/resolver-url.use-case';
 import { RedirectController } from './presentation/controllers/redirect.controller';
+import { ListUserUrlsUseCase } from './application/use-cases/list-user-urls.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlOrmEntity])],
@@ -13,6 +14,7 @@ import { RedirectController } from './presentation/controllers/redirect.controll
   providers: [
     ShortenUrlUseCase,
     ResolveUrlUseCase,
+    ListUserUrlsUseCase,
     {
       provide: 'UrlRepository',
       useClass: UrlRepositoryImpl,

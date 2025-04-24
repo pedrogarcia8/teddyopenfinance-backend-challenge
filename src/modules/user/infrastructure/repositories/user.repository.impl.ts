@@ -10,15 +10,15 @@ export class UserRepositoryImpl implements UserRepository {
     private readonly repository: Repository<UserOrmEntity>,
   ) {}
 
-  async create(user: User): Promise<void> {
+  async create(user: User): Promise<User> {
     const orm = this.repository.create(user);
-    await this.repository.save(orm);
+    return await this.repository.save(orm);
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const orm = await this.repository.findOne({ where: { email } });
     if (!orm) return null;
 
-    return new User(orm.email, orm.password);
+    return new User(orm.email, orm.password, orm.id);
   }
 }
