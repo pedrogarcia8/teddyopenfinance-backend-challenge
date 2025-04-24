@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import typeormConfig from './config/database/typeorm.config';
+import { UrlModule } from './modules/url/url.module';
+import { AppDataSource } from './shared/database/typeorm.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeormConfig)],
+  imports: [TypeOrmModule.forRoot(AppDataSource.options), UrlModule],
   controllers: [AppController],
   providers: [AppService],
 })
