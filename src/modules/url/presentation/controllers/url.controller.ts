@@ -11,9 +11,9 @@ import { ShortenUrlUseCase } from '../../application/use-cases/shorten-url.use-c
 import { ShortenUrlDto } from '../dto/shortenUrl.dto';
 import { Url } from '../../domain/entities/url.entity';
 import { ListUserUrlsUseCase } from '../../application/use-cases/list-user-urls.use-case';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { GetUserDecoratorDto } from 'src/auth/dto/getUserDecorator.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { GetUser } from 'src/shared/auth/decorators/get-user.decorator';
+import { GetUserDecoratorDto } from 'src/shared/auth/dto/getUserDecorator.dto';
+import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
 
 @Controller('url')
 export class UrlController {
