@@ -3,6 +3,7 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { User } from '../../domain/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import JwtTokenGenerator from '../../../../common/utils/jwt-token-generator';
+import { UserAlreadyExistsError } from 'src/common/errors/user-already-exists.error';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -11,18 +12,13 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(email: string, password: string): Promise<string> {
-    try {
-      const existingUser = await this.userRepository.findByEmail(email);
-      if (existingUser) throw new Error('User already exists');
+    const existingUser = await this.userRepository.findByEmail(email);
+    if (existingUser) throw new UserAlreadyExistsError();
 
-      const encryptedPassword = await bcrypt.hash(password, 10);
-      const user = new User(email, encryptedPassword);
-      await this.userRepository.create(user);
-      const token = JwtTokenGenerator(email);
-      return token;
-    } catch (error) {
-      console.log('Error in createUserUseCase: ', error);
-      throw error;
-    }
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    const user = new User(email, encryptedPassword);
+    await this.userRepository.create(user);
+    const token = JwtTokenGenerator(email);
+    return token;
   }
 }

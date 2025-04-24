@@ -2,13 +2,17 @@ import {
   Controller,
   Post,
   Body,
-  HttpException,
-  HttpStatus,
   HttpCode,
+  InternalServerErrorException,
+  ForbiddenException,
+  NotFoundException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { AuthUserUseCase } from '../../application/use-cases/auth-user.use-case';
+import { InvalidCredentialsError, NotFoundError } from 'src/common/errors';
+import { UserAlreadyExistsError } from 'src/common/errors/user-already-exists.error';
 
 @Controller('user')
 export class UserController {
@@ -27,24 +31,35 @@ export class UserController {
       );
       return { token };
     } catch (error: any) {
-      if (error instanceof Error && error.message === 'User already exists') {
-        throw new HttpException(
-          'User already exists',
-          HttpStatus.NOT_ACCEPTABLE,
-        );
+      if (error instanceof UserAlreadyExistsError) {
+        throw new NotAcceptableException(error.message);
       }
 
-      throw new HttpException(
-        typeof error === 'string' ? error : JSON.stringify(error),
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      console.error(error);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
   @Post('/auth')
   @HttpCode(200)
   async auth(@Body() body: CreateUserDto): Promise<{ token: string }> {
-    const token = await this.authUserUseCase.execute(body.email, body.password);
-    return { token };
+    try {
+      const token = await this.authUserUseCase.execute(
+        body.email,
+        body.password,
+      );
+      return { token };
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof InvalidCredentialsError) {
+        throw new ForbiddenException(error.message);
+      }
+
+      console.error(error);
+      throw new InternalServerErrorException('Unexpected error');
+    }
   }
 }

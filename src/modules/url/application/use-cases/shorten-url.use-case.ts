@@ -10,24 +10,18 @@ export class ShortenUrlUseCase {
   ) {}
 
   async execute(originalUrl: string): Promise<string> {
-    try {
-      const existingUrl =
-        await this.urlRepository.findByOriginalUrl(originalUrl);
-      if (existingUrl) return existingUrl.code;
+    const existingUrl = await this.urlRepository.findByOriginalUrl(originalUrl);
+    if (existingUrl) return existingUrl.code;
 
-      const code = randomBytes(6).toString('hex').substring(0, 6);
+    const code = randomBytes(6).toString('hex').substring(0, 6);
 
-      const existingCode = await this.urlRepository.findByCode(code);
-      if (existingCode) return this.execute(originalUrl);
+    const existingCode = await this.urlRepository.findByCode(code);
+    if (existingCode) return this.execute(originalUrl);
 
-      const url = new Url(originalUrl, code);
+    const url = new Url(originalUrl, code);
 
-      await this.urlRepository.create(url);
+    await this.urlRepository.create(url);
 
-      return code;
-    } catch (error) {
-      console.log('Error in shortenUrlUseCase: ', error);
-      throw error;
-    }
+    return code;
   }
 }
