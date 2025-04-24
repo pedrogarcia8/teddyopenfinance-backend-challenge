@@ -24,9 +24,15 @@ export class UrlController {
 
   @Post('/shorten')
   @HttpCode(201)
-  async shorten(@Body() body: ShortenUrlDto): Promise<{ url: string }> {
+  async shorten(
+    @Body() body: ShortenUrlDto,
+    @GetUser() user: GetUserDecoratorDto,
+  ): Promise<{ url: string }> {
     try {
-      const code = await this.shortenUrlUseCase.execute(body.originalUrl);
+      const code = await this.shortenUrlUseCase.execute(
+        body.originalUrl,
+        user?.id || null,
+      );
       return { url: `${process.env.BASE_URL}/${code}` };
     } catch (error) {
       console.error(error);
@@ -39,6 +45,8 @@ export class UrlController {
   @HttpCode(200)
   async listUrlsByUserId(@GetUser() user: GetUserDecoratorDto): Promise<Url[]> {
     try {
+      if (!user.id) return [];
+
       return await this.listUserUrlsUseCase.execute(user.id);
     } catch (error) {
       console.error(error);
