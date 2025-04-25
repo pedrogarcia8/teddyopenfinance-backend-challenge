@@ -1,6 +1,4 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UrlModule } from './modules/url/url.module';
 import { AppDataSource } from './shared/database/typeorm.config';
@@ -15,8 +13,6 @@ import { OptionalJwtMiddleware } from './shared/auth/middlewares/optional-jwt.mi
     UserModule,
     AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
