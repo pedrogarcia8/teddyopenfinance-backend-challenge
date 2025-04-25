@@ -36,4 +36,39 @@ export class UrlRepositoryImpl implements UrlRepository {
     url.clicks += 1;
     await this.repository.save(url);
   }
+
+  async listUrlsByUserId(userId: string): Promise<Url[]> {
+    const urls = await this.repository.find({
+      where: { userId, deletedAt: undefined },
+    });
+
+    return urls as Url[];
+  }
+
+  async updateUserUrlById(
+    userId: string,
+    urlId: string,
+    originalUrl: string,
+  ): Promise<boolean> {
+    const url = await this.repository.findOne({
+      where: { userId, id: urlId },
+    });
+    if (!url) return false;
+
+    url.originalUrl = originalUrl;
+    url.clicks = 0;
+    await this.repository.save(url);
+    return true;
+  }
+
+  async removeUrlById(userId: string, urlId: string): Promise<boolean> {
+    const url = await this.repository.findOne({
+      where: { userId, id: urlId },
+    });
+    if (!url) return false;
+
+    url.deletedAt = new Date();
+    await this.repository.save(url);
+    return true;
+  }
 }

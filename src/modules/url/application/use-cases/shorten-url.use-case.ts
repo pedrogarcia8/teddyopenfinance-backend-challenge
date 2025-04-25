@@ -9,16 +9,16 @@ export class ShortenUrlUseCase {
     @Inject('UrlRepository') private readonly urlRepository: UrlRepository,
   ) {}
 
-  async execute(originalUrl: string): Promise<string> {
+  async execute(originalUrl: string, userId: string | null): Promise<string> {
     const existingUrl = await this.urlRepository.findByOriginalUrl(originalUrl);
     if (existingUrl) return existingUrl.code;
 
     const code = randomBytes(6).toString('hex').substring(0, 6);
 
     const existingCode = await this.urlRepository.findByCode(code);
-    if (existingCode) return this.execute(originalUrl);
+    if (existingCode) return this.execute(originalUrl, userId);
 
-    const url = new Url(originalUrl, code);
+    const url = new Url(originalUrl, code, userId);
 
     await this.urlRepository.create(url);
 
