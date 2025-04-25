@@ -44,4 +44,20 @@ export class UrlRepositoryImpl implements UrlRepository {
 
     return urls as Url[];
   }
+
+  async updateUserUrlById(
+    userId: string,
+    urlId: string,
+    originalUrl: string,
+  ): Promise<boolean> {
+    const url = await this.repository.findOne({
+      where: { userId, id: urlId },
+    });
+    if (!url) return false;
+
+    url.originalUrl = originalUrl;
+    url.clicks = 0;
+    await this.repository.save(url);
+    return true;
+  }
 }
