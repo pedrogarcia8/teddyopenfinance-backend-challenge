@@ -10,6 +10,8 @@ import {
   ForbiddenException,
   Param,
   NotFoundException,
+  Delete,
+  BadRequestException,
 } from '@nestjs/common';
 import { ShortenUrlUseCase } from '../../application/use-cases/shorten-url.use-case';
 import { ShortenUrlDto } from '../dto/shortenUrl.dto';
@@ -18,15 +20,18 @@ import { ListUserUrlsUseCase } from '../../application/use-cases/list-user-urls.
 import { GetUser } from 'src/shared/auth/decorators/get-user.decorator';
 import { GetUserDecoratorDto } from 'src/shared/auth/dto/getUserDecorator.dto';
 import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
-import { UpdateUserUrlByIdUseCase } from '../../application/use-cases/update-user-url-by-id.user-case';
+import { UpdateUserUrlByIdUseCase } from '../../application/use-cases/update-user-url-by-id.use-case';
 import { NotFoundError } from 'src/common/errors/not-found.error';
+import { RemoveUserUrlByIdUseCase } from '../../application/use-cases/remove-user-url-by-id.use-case';
+import { InvalidIdError } from 'src/common/errors/invalid-id.error';
 
 @Controller('url')
 export class UrlController {
   constructor(
     private readonly shortenUrlUseCase: ShortenUrlUseCase,
     private readonly listUserUrlsUseCase: ListUserUrlsUseCase,
-    private readonly updateUserUrlsByIdUseCase: UpdateUserUrlByIdUseCase,
+    private readonly updateUserUrlByIdUseCase: UpdateUserUrlByIdUseCase,
+    private readonly removeUserUrlByIdUseCase: RemoveUserUrlByIdUseCase,
   ) {}
 
   @Post('/shorten')
@@ -72,7 +77,7 @@ export class UrlController {
     try {
       if (!user.id) throw new ForbiddenException('User without permission');
 
-      const isUpdated = await this.updateUserUrlsByIdUseCase.execute(
+      const isUpdated = await this.updateUserUrlByIdUseCase.execute(
         user.id,
         urlId,
         body.originalUrl,
@@ -91,6 +96,48 @@ export class UrlController {
 
       if (error instanceof ForbiddenException) {
         throw new ForbiddenException(error.message);
+      }
+
+      if (error instanceof InvalidIdError) {
+        throw new BadRequestException(error.message);
+      }
+
+      console.error(error);
+      throw new InternalServerErrorException('Unexpected error');
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/user/:id')
+  @HttpCode(204)
+  async removeUserUrlById(
+    @GetUser() user: GetUserDecoratorDto,
+    @Param('id') urlId: string,
+  ): Promise<void> {
+    try {
+      if (!user.id) throw new ForbiddenException('User without permission');
+
+      const isRemoved = await this.removeUserUrlByIdUseCase.execute(
+        user.id,
+        urlId,
+      );
+
+      if (!isRemoved) {
+        throw new NotFoundError(
+          'The url does not exist or does not belong to you',
+        );
+      }
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof ForbiddenException) {
+        throw new ForbiddenException(error.message);
+      }
+
+      if (error instanceof InvalidIdError) {
+        throw new BadRequestException(error.message);
       }
 
       console.error(error);

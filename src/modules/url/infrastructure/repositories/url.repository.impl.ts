@@ -60,4 +60,15 @@ export class UrlRepositoryImpl implements UrlRepository {
     await this.repository.save(url);
     return true;
   }
+
+  async removeUrlById(userId: string, urlId: string): Promise<boolean> {
+    const url = await this.repository.findOne({
+      where: { userId, id: urlId },
+    });
+    if (!url) return false;
+
+    url.deletedAt = new Date();
+    await this.repository.save(url);
+    return true;
+  }
 }

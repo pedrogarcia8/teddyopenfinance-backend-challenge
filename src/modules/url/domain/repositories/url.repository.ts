@@ -11,4 +11,5 @@ export interface UrlRepository {
     urlId: string,
     originalUrl: string,
   ): Promise<boolean>;
+  removeUrlById(userId: string, urlId: string): Promise<boolean>;
 }
