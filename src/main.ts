@@ -17,6 +17,7 @@ async function bootstrap() {
     .setTitle('Teddy Open Finance Backend Challenge')
     .setDescription('The Teddy Open Finance backend challenge API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

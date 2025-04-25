@@ -16,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { ShortenUrlUseCase } from '../../application/use-cases/shorten-url.use-case';
 import { ShortenUrlDto } from '../dto/shortenUrl.dto';
-import { Url } from '../../domain/entities/url.entity';
 import { ListUserUrlsUseCase } from '../../application/use-cases/list-user-urls.use-case';
 import { GetUser } from 'src/shared/auth/decorators/get-user.decorator';
 import { GetUserDecoratorDto } from 'src/shared/auth/dto/getUserDecorator.dto';
@@ -27,6 +26,13 @@ import { RemoveUserUrlByIdUseCase } from '../../application/use-cases/remove-use
 import { InvalidIdError } from 'src/common/errors/invalid-id.error';
 import { Request } from 'express';
 import getBaseUrl from 'src/common/utils/get-base-url';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
+import { UrlDto } from '../dto/url.dto';
 
 @Controller('url')
 export class UrlController {
@@ -39,6 +45,30 @@ export class UrlController {
 
   @Post('/shorten')
   @HttpCode(201)
+  @ApiOperation({
+    summary: 'Shorten a URL',
+    description:
+      'This endpoint shortens a given URL and returns the shortened version.',
+  })
+  @ApiBody({
+    type: ShortenUrlDto,
+  })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+          description: 'Shortened URL',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Unexpected error',
+  })
   async shorten(
     @Body() body: ShortenUrlDto,
     @GetUser() user: GetUserDecoratorDto,
@@ -59,7 +89,27 @@ export class UrlController {
   @UseGuards(JwtAuthGuard)
   @Get('/user')
   @HttpCode(200)
-  async listUrlsByUserId(@GetUser() user: GetUserDecoratorDto): Promise<Url[]> {
+  @ApiOperation({
+    summary: 'List URLs by user ID',
+    description:
+      'This endpoint lists all URLs associated with the authenticated user.',
+  })
+  @ApiResponse({
+    status: 200,
+    type: [UrlDto],
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Unexpected error',
+  })
+  @ApiBearerAuth()
+  async listUrlsByUserId(
+    @GetUser() user: GetUserDecoratorDto,
+  ): Promise<UrlDto[]> {
     try {
       if (!user.id) return [];
 
@@ -73,6 +123,43 @@ export class UrlController {
   @UseGuards(JwtAuthGuard)
   @Patch('/user/:id')
   @HttpCode(200)
+  @ApiOperation({
+    summary: 'Update a User URL by URL ID',
+    description:
+      'This endpoint updates a URL associated with the authenticated user by its ID.',
+  })
+  @ApiBody({
+    type: ShortenUrlDto,
+  })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          description: 'Url updated successfully',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid URL ID',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'User without permission',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'The url does not exist or does not belong to you',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Unexpected error',
+  })
+  @ApiBearerAuth()
   async updateUserUrlById(
     @GetUser() user: GetUserDecoratorDto,
     @Body() body: ShortenUrlDto,
@@ -114,6 +201,31 @@ export class UrlController {
   @UseGuards(JwtAuthGuard)
   @Delete('/user/:id')
   @HttpCode(204)
+  @ApiOperation({
+    summary: 'Delete a User URL by URL ID',
+    description:
+      'This endpoint "soft delete" a URL associated with the authenticated user by its ID.',
+  })
+  @ApiResponse({
+    status: 204,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid URL ID',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'User without permission',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'The url does not exist or does not belong to you',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Unexpected error',
+  })
+  @ApiBearerAuth()
   async removeUserUrlById(
     @GetUser() user: GetUserDecoratorDto,
     @Param('id') urlId: string,
