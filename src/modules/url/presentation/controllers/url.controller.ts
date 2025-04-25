@@ -12,6 +12,7 @@ import {
   NotFoundException,
   Delete,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { ShortenUrlUseCase } from '../../application/use-cases/shorten-url.use-case';
 import { ShortenUrlDto } from '../dto/shortenUrl.dto';
@@ -24,6 +25,8 @@ import { UpdateUserUrlByIdUseCase } from '../../application/use-cases/update-use
 import { NotFoundError } from 'src/common/errors/not-found.error';
 import { RemoveUserUrlByIdUseCase } from '../../application/use-cases/remove-user-url-by-id.use-case';
 import { InvalidIdError } from 'src/common/errors/invalid-id.error';
+import { Request } from 'express';
+import getBaseUrl from 'src/common/utils/get-base-url';
 
 @Controller('url')
 export class UrlController {
@@ -39,13 +42,14 @@ export class UrlController {
   async shorten(
     @Body() body: ShortenUrlDto,
     @GetUser() user: GetUserDecoratorDto,
+    @Req() req: Request,
   ): Promise<{ url: string }> {
     try {
       const code = await this.shortenUrlUseCase.execute(
         body.originalUrl,
         user?.id || null,
       );
-      return { url: `${process.env.BASE_URL}/${code}` };
+      return { url: `${getBaseUrl(req)}/${code}` };
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Unexpected error');
