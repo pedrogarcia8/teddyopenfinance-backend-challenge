@@ -29,6 +29,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
 import { UrlDto } from '../dto/url.dto';
@@ -168,6 +169,11 @@ export class UrlController {
     description: 'Unexpected error',
   })
   @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the URL to update',
+    type: 'string',
+  })
   async updateUserUrlById(
     @GetUser() user: GetUserDecoratorDto,
     @Body() body: ShortenUrlDto,
@@ -234,6 +240,11 @@ export class UrlController {
     description: 'Unexpected error',
   })
   @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the URL to remove',
+    type: 'string',
+  })
   async removeUserUrlById(
     @GetUser() user: GetUserDecoratorDto,
     @Param('id') urlId: string,

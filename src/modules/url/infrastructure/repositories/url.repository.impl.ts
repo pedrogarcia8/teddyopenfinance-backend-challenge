@@ -23,7 +23,9 @@ export class UrlRepositoryImpl implements UrlRepository {
   }
 
   async findByOriginalUrl(originalUrl: string): Promise<Url | null> {
-    const orm = await this.repository.findOne({ where: { originalUrl } });
+    const orm = await this.repository.findOne({
+      where: { originalUrl, deletedAt: undefined },
+    });
     if (!orm) return null;
 
     return new Url(orm.originalUrl, orm.code);
@@ -51,7 +53,7 @@ export class UrlRepositoryImpl implements UrlRepository {
     originalUrl: string,
   ): Promise<boolean> {
     const url = await this.repository.findOne({
-      where: { userId, id: urlId },
+      where: { userId, id: urlId, deletedAt: undefined },
     });
     if (!url) return false;
 
@@ -63,7 +65,7 @@ export class UrlRepositoryImpl implements UrlRepository {
 
   async removeUrlById(userId: string, urlId: string): Promise<boolean> {
     const url = await this.repository.findOne({
-      where: { userId, id: urlId },
+      where: { userId, id: urlId, deletedAt: undefined },
     });
     if (!url) return false;
 

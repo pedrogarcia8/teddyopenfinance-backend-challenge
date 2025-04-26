@@ -1,98 +1,121 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Projeto contendo o Desafio Técnico de Backend da Teddy Open Finance
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API construída em NodeJS + TypeScript, usando NestJS como framework, banco de dados PostgreSQL e Docker, com objetivo principal de encurtar URLs. 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+#### Tecnologias
 
-## Description
+- Node.js versão 22.15.0 (Última versão estável)
+- NestJS versão 11.0.7
+- PostgreSQL versão 13
+- TypeScript
+- Docker
+- Class Validator / Transformer
+- Bcrypt
+- TypeORM
+- JSON WEB Token
+- Passport JWT (JSON WEB Token)
+- Jest
+- Swagger
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+#### Como rodar localmente
 
-## Project setup
-
-```bash
-$ npm install
+1. Clone o repositório
+```
+git clone https://github.com/pedrogarcia8/teddyopenfinance-backend-challenge.git
+cd teddyopenfinance-backend-challenge
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+2. Adicione o arquivo .env na raiz do projeto, seguindo o exemplo:
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=teddyopenfinance
+JWT_SECRET=secret
 ```
 
-## Run tests
+3. Construa e roda a aplicação com docker-compose
+```
+docker-compose up --build
+```
+- A API ficará disponível em http://localhost:8080
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+4. Caso queria executar os testes, instale as dependências antes de rodá-los
+```
+npm install
 ```
 
-## Deployment
+#### Rodando os testes automatizados
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+Rodar todos os teste
+```
+npm run test
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Rodar testes em modo de observação (watch mode)
+```
+npm run test:watch
+```
 
-## Resources
+Gerar relatório de cobertura de testes
+```
+npm run test:cov
+```
+- O relatório de cobertura será gerado em ./coverage (pasta "coverage" na raiz do projeto)
 
-Check out a few resources that may come in handy when working with NestJS:
+#### Documentação
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+É possível acessar a documentação Swagger da API em http://localhost:8080/docs, nela contém a documentação das rotas detalhadamente.
 
-## Support
+##### GET /:code
+- Recebe o código da URL encurtada.
+- Valida se o código existe no banco de dados.
+- Redireciona o usuário para a URL original.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+##### POST /url/shorten
+- Autenticação Opcional
+- Recebe a URL original
+- Retorna a URL encurtada
 
-## Stay in touch
+##### GET /url/user
+- Autenticação Obrigatória
+- Retorna a listagem dos dados da URL de um usuário
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+##### PATCH /url/user/{id}
+- Autenticação Obrigatória
+- Atualiza a URL original de uma URL encurtada
 
-## License
+##### DELETE /url/user/{id}
+- Autenticação Obrigatória
+- Realiza um "soft delete" na URL encurtada
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+##### POST /user
+- Cria um novo usuário
+- Retorna um token de autenticação
+
+##### POST /user/auth
+- Autentica um usuário
+- Retorna um token de autenticação
+
+#### Pontos de Melhoria e Desafios para Escalabilidade Horizontal
+
+Ao escalar uma aplicação horizontalmente, há diversos pontos que precisam ser considerados para garantir o bom funcionamento:
+
+- Gerenciamento de Sessões: Utilizar soluções como Redis para gerenciar sessões de forma distribuída, evitando problemas ao acessar diferentes instâncias.
+
+- Balanceamento de Carga: Usar balanceadores de carga para distribuir as requisições entre as instâncias de forma eficiente e evitar sobrecarga em algumas delas.
+
+- Banco de Dados: Implementar replicação de banco de dados para distribuir as leituras e garantir desempenho, além de considerar o sharding para escalabilidade maior.
+
+- Orquestração e Monitoramento: Ferramentas como Kubernetes e Prometheus são essenciais para gerenciar a infraestrutura e monitorar a saúde das instâncias.
+
+- Dependências Externas: Utilizar circuit breakers e timeouts para evitar falhas em serviços externos afetarem o sistema. Também é importante usar filas para processar tarefas assíncronas.
+
+- Escalabilidade de API: Implementar API Gateway para gerenciar o tráfego e distribuir as requisições adequadamente entre as instâncias.
+
+Desafios:
+
+- Manter a consistência de dados entre as instâncias, gerenciar sessões de usuários e implementar um monitoramento eficaz.
+
+Essas melhorias garantirão que a aplicação escale de maneira eficiente, suportando maior carga de usuários e mantendo a performance.
