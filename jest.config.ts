@@ -14,7 +14,7 @@ const config: Config = {
     '!**/typeorm/**',
     '!**/migrations/**',
   ],
-  coverageDirectory: '../coverage',
+  coverageDirectory: './coverage',
   coverageProvider: 'v8',
   testEnvironment: 'node',
   moduleNameMapper: {
