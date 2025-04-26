@@ -11,8 +11,11 @@ import {
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { AuthUserUseCase } from '../../application/use-cases/auth-user.use-case';
-import { InvalidCredentialsError, NotFoundError } from 'src/common/errors';
-import { UserAlreadyExistsError } from 'src/common/errors/user-already-exists.error';
+import {
+  InvalidCredentialsError,
+  NotFoundError,
+  UserAlreadyExistsError,
+} from './../../../../common/errors';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('user')
