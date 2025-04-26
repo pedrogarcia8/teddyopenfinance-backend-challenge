@@ -3,7 +3,7 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { User } from '../../domain/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
 import JwtTokenGenerator from '../../../../common/utils/jwt-token-generator';
-import { UserAlreadyExistsError } from 'src/common/errors/user-already-exists.error';
+import { UserAlreadyExistsError } from '../../../../common/errors/user-already-exists.error';
 
 @Injectable()
 export class CreateUserUseCase {

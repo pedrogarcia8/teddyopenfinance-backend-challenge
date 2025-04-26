@@ -12,7 +12,14 @@ export class UserRepositoryImpl implements UserRepository {
 
   async create(user: User): Promise<User> {
     const orm = this.repository.create(user);
-    return await this.repository.save(orm);
+    const savedUser = await this.repository.save(orm);
+    return new User(
+      savedUser.email,
+      savedUser.password,
+      savedUser.id,
+      savedUser.createdAt,
+      savedUser.updatedAt,
+    );
   }
 
   async findByEmail(email: string): Promise<User | null> {
