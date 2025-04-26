@@ -51,6 +51,10 @@ export class UserController {
     description: 'User already exists',
   })
   @ApiResponse({
+    status: 422,
+    description: 'Validation error',
+  })
+  @ApiResponse({
     status: 500,
     description: 'Unexpected error',
   })
@@ -99,6 +103,10 @@ export class UserController {
   @ApiResponse({
     status: 404,
     description: 'User not found',
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Validation error',
   })
   @ApiResponse({
     status: 500,
