@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ResolveUrlUseCase } from '../../application/use-cases/resolver-url.use-case';
-import { NotFoundError } from 'src/common/errors/not-found.error';
+import { NotFoundError } from './../../../../common/errors';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller()
