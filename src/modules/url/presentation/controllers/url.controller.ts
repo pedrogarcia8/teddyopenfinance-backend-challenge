@@ -72,6 +72,7 @@ export class UrlController {
     status: 500,
     description: 'Unexpected error',
   })
+  @ApiBearerAuth()
   async shorten(
     @Body() body: ShortenUrlDto,
     @GetUser() user: GetUserDecoratorDto,
