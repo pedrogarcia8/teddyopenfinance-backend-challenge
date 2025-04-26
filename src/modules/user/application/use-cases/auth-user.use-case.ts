@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import * as bcrypt from 'bcryptjs';
 import JwtTokenGenerator from '../../../../common/utils/jwt-token-generator';
-import { InvalidCredentialsError, NotFoundError } from 'src/common/errors';
+import {
+  InvalidCredentialsError,
+  NotFoundError,
+} from '../../../../common/errors';
 
 @Injectable()
 export class AuthUserUseCase {
