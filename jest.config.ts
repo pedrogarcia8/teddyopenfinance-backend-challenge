@@ -2,7 +2,7 @@ import { Config } from 'jest';
 
 const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
+  rootDir: './',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
@@ -15,6 +15,7 @@ const config: Config = {
     '!**/migrations/**',
   ],
   coverageDirectory: '../coverage',
+  coverageProvider: 'v8',
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@app/(.*)$': '<rootDir>/$1',
@@ -24,7 +25,6 @@ const config: Config = {
     '^@infra/(.*)$': '<rootDir>/infra/$1',
   },
   clearMocks: true,
-  setupFilesAfterEnv: ['<rootDir>/../test/setup.ts'],
 };
 
 export default config;
