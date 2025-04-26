@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UrlRepository } from '../../domain/repositories/url.repository';
-import { InvalidIdError } from 'src/common/errors/invalid-id.error';
-import isValidUUID from 'src/common/utils/is-valid-uuid';
+import { InvalidIdError } from './../../../../common/errors';
+import isValidUUID from './../../../../common/utils/is-valid-uuid';
 
 @Injectable()
 export class UpdateUserUrlByIdUseCase {
