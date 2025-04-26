@@ -17,15 +17,14 @@ import {
 import { ShortenUrlUseCase } from '../../application/use-cases/shorten-url.use-case';
 import { ShortenUrlDto } from '../dto/shortenUrl.dto';
 import { ListUserUrlsUseCase } from '../../application/use-cases/list-user-urls.use-case';
-import { GetUser } from 'src/shared/auth/decorators/get-user.decorator';
-import { GetUserDecoratorDto } from 'src/shared/auth/dto/getUserDecorator.dto';
-import { JwtAuthGuard } from 'src/shared/auth/guards/jwt-auth.guard';
+import { GetUser } from './../../../../shared/auth/decorators/get-user.decorator';
+import { GetUserDecoratorDto } from './../../../../shared/auth/dto/getUserDecorator.dto';
+import { JwtAuthGuard } from './../../../../shared/auth/guards/jwt-auth.guard';
 import { UpdateUserUrlByIdUseCase } from '../../application/use-cases/update-user-url-by-id.use-case';
-import { NotFoundError } from 'src/common/errors/not-found.error';
 import { RemoveUserUrlByIdUseCase } from '../../application/use-cases/remove-user-url-by-id.use-case';
-import { InvalidIdError } from 'src/common/errors/invalid-id.error';
+import { InvalidIdError, NotFoundError } from './../../../../common/errors';
 import { Request } from 'express';
-import getBaseUrl from 'src/common/utils/get-base-url';
+import getBaseUrl from './../../../../common/utils/get-base-url';
 import {
   ApiBearerAuth,
   ApiBody,
