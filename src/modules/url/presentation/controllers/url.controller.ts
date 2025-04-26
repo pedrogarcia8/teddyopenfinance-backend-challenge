@@ -65,6 +65,10 @@ export class UrlController {
     },
   })
   @ApiResponse({
+    status: 422,
+    description: 'Validation error',
+  })
+  @ApiResponse({
     status: 500,
     description: 'Unexpected error',
   })
@@ -153,6 +157,10 @@ export class UrlController {
   @ApiResponse({
     status: 404,
     description: 'The url does not exist or does not belong to you',
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Validation error',
   })
   @ApiResponse({
     status: 500,
