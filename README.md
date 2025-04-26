@@ -41,7 +41,7 @@ docker-compose up --build
 ```
 - A API ficará disponível em http://localhost:8080
 
-4. Caso queria executar os testes, instale as dependências antes de rodá-los
+4. Caso queria executar os testes, instale as dependências fora do container antes de rodá-los
 ```
 npm install
 ```
