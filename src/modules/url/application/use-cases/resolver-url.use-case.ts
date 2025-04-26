@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UrlRepository } from '../../domain/repositories/url.repository';
-import { NotFoundError } from 'src/common/errors/not-found.error';
+import { NotFoundError } from './../../../../common/errors';
 
 @Injectable()
 export class ResolveUrlUseCase {
