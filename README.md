@@ -35,7 +35,7 @@ POSTGRES_DB=teddyopenfinance
 JWT_SECRET=secret
 ```
 
-3. Construa e roda a aplicação com docker-compose
+3. Construa e rode a aplicação com docker-compose
 ```
 docker-compose up --build
 ```
